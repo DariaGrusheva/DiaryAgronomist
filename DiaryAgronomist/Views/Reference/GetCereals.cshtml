@@ -1,0 +1,118 @@
+﻿@model List<Cereal>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Зерновые";
+}
+
+<div class="container text-center">
+    <div class="row">
+        <h2 class="title">Зерновые</h2>
+    </div>
+    <div class="row">
+    <!-- Кнопка вызова модального окна -->
+        <button type="button" class="btn btn-primary btn-create" data-bs-toggle="modal" onclick="createCereal()">
+        Добавить запись
+    </button>
+
+    <!-- Модальное окно -->
+        <div class="modal fade" id="createCerealModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Удаление записи:</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    <div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Название зерновых</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CerealName</td>
+                    <td>
+                                <button type="button" class="btn btn-primary btn-create btn-ref" style="width: 50%" data-bs-toggle="modal" onclick="createCereal(@item.CerealId)">
+                                    Изменить
+                                </button>
+                    </td>
+                    <td>
+
+                                <button type="button" class="btn btn-primary btn-create btn-ref" style="width: 50%" data-bs-toggle="modal" onclick="deleteCereal(@item.CerealId)">
+                                        Удалить
+                                    </button>
+                                
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</div>
+
+
+@section scripts{
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+        <script>
+            function deleteCereal(cerealId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetCerealForDelete", "Reference")',
+                    data: { id: cerealId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#deleteModal").find(".modal-body").html(response);
+                        $("#deleteModal").modal('show');
+                    }
+                })
+            }
+
+            function createCereal(cerealId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("CreateOrEditCereal", "Reference")',
+                    data: { id: cerealId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        if (cerealId) {
+                            $("#createCerealModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для изменения записи заполните поля:</h4>');
+                        }
+                        else {
+                            $("#createCerealModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для добавления записи заполните поля:</h4>');
+                        }
+                        
+                        $("#createCerealModal").find(".modal-body").html(response);
+                        $("#createCerealModal").modal('show');
+                    }
+                })
+            }
+        </script>
+}

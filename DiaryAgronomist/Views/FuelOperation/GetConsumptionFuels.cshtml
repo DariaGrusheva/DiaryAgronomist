@@ -1,0 +1,124 @@
+﻿@model List<ConsumptionFuel>
+@{
+    ViewData["Title"] = "Расход топлива";
+}
+
+<div class="container text-center">
+    <div class="row">
+        <h2 class="title">Расход топлива</h2>
+    </div>
+    <div class="row">
+    <!-- Кнопка вызова модального окна -->
+        <button type="button" class="btn btn-primary btn-create" data-bs-toggle="modal" onclick="createConsumption()">
+        Добавить запись
+    </button>
+
+    <!-- Модальное окно -->
+        <div class="modal fade" id="createConsumptionFuelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Для добавления новой записи заполните поля:</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Удаление записи:</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    <div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+
+                        <th scope="col">Дата</th>
+                        <th scope="col">Вид топлива</th>
+                        <th scope="col">Объем топлива</th>
+                        <th scope="col">Сотрудник</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.DateConsumption.ToString("d")</td>
+                    <td>@item.Fuel.FuelName</td>      
+                    <td>@item.FuelVolume</td>
+                    <td>@item.Employee.FullName</td>
+
+                            <td>
+                                <button type="button" class="btn btn-primary btn-create btn-editdel" data-bs-toggle="modal" onclick="createConsumption(@item.ConsumptionId)">
+                                    Изменить
+                                </button>
+                            </td>
+                            <td>
+
+                                <button type="button" class="btn btn-primary btn-create btn-editdel" data-bs-toggle="modal" onclick="deleteConsumption(@item.ConsumptionId)">
+                                    Удалить
+                                </button>
+
+                            </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</div>
+
+
+@section scripts{
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+        <script>
+            function createConsumption(consumptionId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("CreateOrEditConsumptionFuel", "FuelOperation")',
+                    data: { id: consumptionId},
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        if (consumptionId) {
+                            $("#createConsumptionFuelModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для изменения записи заполните поля:</h4>');
+                        }
+                        else {
+                            $("#createConsumptionFuelModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для добавления записи заполните поля:</h4>');
+                        }
+                        $("#createConsumptionFuelModal").find(".modal-body").html(response);
+                        $("#createConsumptionFuelModal").modal('show');
+                    }
+                })
+            }
+            function deleteConsumption(consumptionId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetConsumptionFuelForDelete", "FuelOperation")',
+                    data: { id: consumptionId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#deleteModal").find(".modal-body").html(response);
+                        $("#deleteModal").modal('show');
+                    }
+                })
+            }
+
+        </script>
+}

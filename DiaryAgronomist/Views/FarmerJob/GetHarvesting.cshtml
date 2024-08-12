@@ -1,0 +1,102 @@
+﻿@model List<Harvesting>
+@{
+    ViewData["Title"] = "Сбор урожая";
+}
+<div class="container text-center">
+    <div class="row">
+        <h2 class="title">Сбор урожая</h2>
+    </div>
+    <div class="row">
+
+        <a type="button" href="@Url.Action("CreateOrEditHarvesting", "FarmerJob")" class="btn btn-primary btn-create" >
+            Добавить запись
+        </a>
+
+        
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Удаление записи:</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th scope="col">Дата уборки</th>
+                        <th scope="col">Поле</th>
+                        <th scope="col">Зерновые</th>
+                        <th scope="col">Количество зерновых</th>
+                        <th scope="col">Работники, <br />задействованные<br /> в уборке</th>
+                        <th scope="col">Техника, <br />задействованная<br /> в уборке</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.HarvestingDate.ToString("d")</td>
+                            <td>@item.FieldPlanting.FieldAddress</td>
+                            <td>@item.Cereal.CerealName</td>
+                            <td>@item.NumberCereal</td>
+                            <td>@foreach (var emp in item.Employees)
+                                {
+                                    <span>@emp.FullName;</span><br>
+                                } 
+                            </td>
+                            <td>
+                                @foreach (var mach in item.Machineries)
+                                {
+                                    <span>@mach.MachineryName;</span><br>
+                                }
+                            </td>
+                            <td>
+                                <a type="button" href="@Url.Action("CreateOrEditHarvesting", "FarmerJob", new {id = item.HarvestingId})" class="btn btn-primary btn-create btn-editdel">
+                                    Изменить
+                                </a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-create btn-ref" style="width: 100%" data-bs-toggle="modal" onclick="deleteHarvesting(@item.HarvestingId)">
+                                    Удалить
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    @section scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+        <script>
+
+            function deleteHarvesting(harvestingId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetHarvestingForDelete", "FarmerJob")',
+                    data: { id: harvestingId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#deleteModal").find(".modal-body").html(response);
+                        $("#deleteModal").modal('show');
+                    }
+                })
+            }
+
+        </script>
+    }
+

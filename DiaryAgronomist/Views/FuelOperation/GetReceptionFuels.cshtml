@@ -1,0 +1,123 @@
+﻿@model List<ReceptionFuel>
+@{
+    ViewData["Title"] = "Покупка топлива";
+}
+<div class="container text-center">
+    <div class="row">
+        <h2 class="title">Покупка топлива</h2>
+    </div>
+    <div class="row">
+        <!-- Кнопка вызова модального окна -->
+        <button type="button" class="btn btn-primary btn-create" data-bs-toggle="modal" onclick="createReception()">
+            Добавить запись
+        </button>
+
+        <!-- Модальное окно -->
+        <div class="modal fade" id="createReceptionFuelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Для добавления новой записи заполните поля:</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Удаление записи:</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        
+                        <th scope="col">Дата</th>
+                        <th scope="col">Объем топлива</th>
+                        <th scope="col">Наименование топлива</th>
+                        <th scope="col">Сотрудник принял</th>
+                        <th scope="col">Поставщик</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            
+                            <td>@item.DateReception.ToString("d")</td>
+                            <td>@item.FuelVolume</td>
+                            <td>@item.Fuel.FuelName</td>
+                            <td>@item.Employee.FullName</td>
+                            <td>@item.FuelSupplier.NameOrganization</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-create btn-editdel" data-bs-toggle="modal" onclick="createReception(@item.ReceptionId)">
+                                    Изменить
+                                </button>
+                            </td>
+                            <td>
+
+                                <button type="button" class="btn btn-primary btn-create btn-editdel" data-bs-toggle="modal" onclick="deleteReception(@item.ReceptionId)">
+                                    Удалить
+                                </button>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    @section scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+        <script>
+            function createReception(receptionId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("CreateOrEditReceptionFuel", "FuelOperation")',
+                    data: { id: receptionId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        if (receptionId) {
+                            $("#createReceptionFuelModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для изменения записи заполните поля:</h4>');
+                        }
+                        else {
+                            $("#createReceptionFuelModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для добавления записи заполните поля:</h4>');
+                        }
+                        $("#createReceptionFuelModal").find(".modal-body").html(response);
+                        $("#createReceptionFuelModal").modal('show');
+                    }
+                })
+            }
+            function deleteReception(receptionId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetReceptionFuelForDelete", "FuelOperation")',
+                    data: { id: receptionId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#deleteModal").find(".modal-body").html(response);
+                        $("#deleteModal").modal('show');
+                    }
+                })
+            }
+
+        </script>
+    }

@@ -1,0 +1,33 @@
+﻿@model ReceptionFuel
+
+@{
+    ViewData["Title"] = "Удаление данных о поступлении топлива";
+}
+
+<form asp-action="DeleteReceptionFuel" asp-controller="FuelOperation" asp-route-id="@Model.ReceptionId">
+    @Html.HiddenFor(model => model.ReceptionId)
+    <p>
+        <label asp-for="DateReception" class="form-label">Дата поставки:</label><br />
+        <input type="date" asp-for="DateReception" class="form-control" disabled/>
+    </p>
+    <p>
+        <label asp-for="FuelId" class="form-label">Вид топлива:</label><br />
+        <input type="text" asp-for="Fuel.FuelName" class="form-control" disabled/>
+    </p>
+    <p>
+        <label asp-for="FuelVolume" class="form-label">Объем прихода топлива(л.):</label><br />
+        <input type="number" asp-for="FuelVolume" class="form-control" disabled/>
+    </p>
+    <p>
+        <label asp-for="SupplierId" class="form-label">Поставщик:</label><br />
+        <input type="text" asp-for="FuelSupplier.NameOrganization" class="form-control" disabled/>
+    </p>
+    <p>
+        <label asp-for="EmployeeId" class="form-label">Принявший сотрудник:</label><br />
+        <input type="text" asp-for="Employee.FullName" class="form-control" disabled/>
+    </p>
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Подтвердить удаление" class="btn btn-secondary" />
+    </p>
+</form>

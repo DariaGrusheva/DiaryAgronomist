@@ -1,0 +1,16 @@
+﻿@model Cereal
+@{
+    ViewData["Title"] = "Зерновые";
+}
+
+<form asp-action="createOrEditCereal" asp-controller="reference">
+    @Html.HiddenFor(model => model.CerealId)
+    <p>
+        <label asp-for="CerealName" class="form-label">Название культуры:</label><br />
+        <input type="text" asp-for="CerealName" class="form-control" />
+    </p>    
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Внести данные" class="btn btn-secondary" />
+    </p>
+</form>

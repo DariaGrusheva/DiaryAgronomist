@@ -1,0 +1,21 @@
+﻿@model Machinery
+
+@{
+    ViewData["Title"] = "Удаление техники";
+}
+
+<form asp-action="DeleteMachinery" asp-controller="Reference" asp-route-id="@Model.MachineryId">
+    @Html.HiddenFor(model => model.MachineryId)
+    <p>
+        <label asp-for="MachineryName" class="form-label">Название техники:</label><br />
+        <input type="text" asp-for="MachineryName" class="form-control" disabled />
+    </p>
+    <p>
+        <label asp-for="ManufactureYear" class="form-label">Год выпуска:</label><br />
+        <input type="number" asp-for="ManufactureYear" class="form-control" disabled />
+    </p>
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Подтвердить удаление" class="btn btn-secondary" />
+    </p>
+</form>

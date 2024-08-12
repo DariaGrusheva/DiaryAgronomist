@@ -1,0 +1,41 @@
+﻿@model Employee
+
+@{
+    ViewData["Title"] = "Удаление сотрудника";
+}
+
+<form asp-action="DeleteEmployee" asp-controller="Employee" asp-route-id="@Model.EmployeeId">
+    @Html.HiddenFor(model => model.EmployeeId)
+    <p>
+        <label asp-for="Surname" class="form-label">Фамилия:</label><br />
+        <input type="text" asp-for="Surname" class="form-control" disabled />
+    </p>
+    <p>
+        <label asp-for="Firstname" class="form-label">Имя:</label><br />
+        <input type="text" asp-for="Firstname" class="form-control" disabled />
+    </p>
+    <p>
+        <label asp-for="Patronymic" class="form-label">Отчество:</label><br />
+        <input type="text" asp-for="Patronymic" class="form-control" disabled />
+    </p>
+    <p>
+        <label asp-for="PhoneNumberEmployee" class="form-label">Номер телефона:</label><br />
+        <input type="text" asp-for="PhoneNumberEmployee" class="form-control" disabled />
+    </p>
+    <p>
+        <label asp-for="Specialization" class="form-label">Специальность:</label><br />
+        <input type="text" asp-for="Specialization" class="form-control" disabled />
+    </p>
+    <p>
+        <label asp-for="EmploymentDate" class="form-label">Дата приема:</label><br />
+        <input type="date" asp-for="EmploymentDate" class="form-control" disabled />
+    </p>
+    <p>
+        <label asp-for="DismissalDate" class="form-label">Дата увольнения:</label><br />
+        <input type="date" asp-for="DismissalDate" class="form-control" disabled />
+    </p>
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Подтвердить удаление" class="btn btn-secondary" />
+    </p>
+</form>

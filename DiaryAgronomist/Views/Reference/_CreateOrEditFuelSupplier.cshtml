@@ -1,0 +1,24 @@
+﻿@model FuelSupplier
+@{
+    ViewData["Title"] = "Поставщики топлива";
+}
+
+<form asp-action="createOrEditFuelSupplier" asp-controller="reference">
+    @Html.HiddenFor(model => model.SupplierId)
+    <p>
+        <label asp-for="NameOrganization" class="form-label">Наименование организации:</label><br />
+        <input type="text" asp-for="NameOrganization" class="form-control" />
+    </p>
+    <p>
+        <label asp-for="AddressOrganization" class="form-label">Адрес организации:</label><br />
+        <input type="text" asp-for="AddressOrganization" class="form-control" />
+    </p>
+    <p>
+        <label asp-for="PhoneNumberOrganization" class="form-label">Контактный телефон:</label><br />
+        <input type="tel" asp-for="PhoneNumberOrganization" class="form-control" />
+    </p>
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Внести данные" class="btn btn-secondary" />
+    </p>
+</form>

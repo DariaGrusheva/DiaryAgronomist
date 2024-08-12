@@ -1,0 +1,40 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "Внесение данных о сотрудниках";
+}
+
+<form asp-action="createOrEditEmployee" asp-controller="employee">
+    @Html.HiddenFor(model => model.EmployeeId)
+    <p>
+        <label asp-for="Surname" class="form-label">Введите фамилию:</label><br />
+        <input type="text" asp-for="Surname" class="form-control" />
+    </p>
+    <p>
+        <label asp-for="Firstname" class="form-label">Введите имя:</label><br />
+        <input type="text" asp-for="Firstname" class="form-control" />
+    </p>
+    <p>
+        <label asp-for="Patronymic" class="form-label">Введите отчество:</label><br />
+        <input type="text" asp-for="Patronymic" class="form-control" />
+    </p>
+    <p>
+        <label asp-for="PhoneNumberEmployee" class="form-label">Введите номер телефона:</label><br />
+        <input type="text" asp-for="PhoneNumberEmployee" class="form-control" />
+    </p>
+    <p>
+        <label asp-for="Specialization" class="form-label">Введите специальность:</label><br />
+        <input type="text" asp-for="Specialization" class="form-control" />
+    </p>
+    <p>
+        <label asp-for="EmploymentDate" class="form-label">Введите дату приема:</label><br />
+        <input type="date" asp-for="EmploymentDate" class="form-control" />
+    </p>
+    <p>
+        <label asp-for="DismissalDate" class="form-label">Введите дату увольнения:</label><br />
+        <input type="date" asp-for="DismissalDate" class="form-control" />
+    </p>
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Внести данные" class="btn btn-secondary" />
+    </p>
+</form> 

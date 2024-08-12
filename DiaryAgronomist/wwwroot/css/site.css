@@ -1,0 +1,98 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+element {
+    --main-dgreen-color: #3f524c;
+    --main-green-color: #5b795d;
+    --main-lgreen-color: #97ad87;
+    --main-beige-color: #cfc69f;
+    --main-lbeige-color: #feeddb;
+}
+
+.container-fluid {
+    background-color: #eeeeee !important;
+    }
+
+.navbar-brand {
+    color: #6f7165 !important;
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding: 1rem 1rem;
+}
+
+.nav-link {
+    color: #6f7165 !important;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.nav-item {
+    margin: 0 1%;
+}
+
+.dropdown-toggle {
+    background-color: #6f7165 !important;
+    color: #eeeeee;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.dropdown-item {
+    color: #6f7165;
+    font-weight: bold;
+}
+
+.btn-create {
+    background-color: #ccd5be;
+    color: #6f7165;
+    border-color: #6f7165;
+    font-weight: 500;
+    width: 15%;
+    margin-bottom: 2rem;
+}
+
+.btn-editdel {
+    width: 80%;
+    margin-bottom: 0;
+}
+.btn-ref {
+    width: 40%;
+    margin-bottom: 0;
+}
+
+    .title {
+        color: #6f7165;
+        margin-top: 2rem;
+        letter-spacing: 1px;
+    }
+
+h1 {
+    color: #6f7165;
+    padding: 3rem;
+    letter-spacing: 1px;
+}
+
+.da {
+    font-size: 1.3rem;
+    padding-bottom: 3rem;
+}

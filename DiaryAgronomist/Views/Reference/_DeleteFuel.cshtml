@@ -1,0 +1,17 @@
+﻿@model Fuel
+
+@{
+    ViewData["Title"] = "Удаление топлива";
+}
+
+<form asp-action="DeleteFuel" asp-controller="Reference" asp-route-id="@Model.FuelId">
+    @Html.HiddenFor(model => model.FuelId)
+    <p>
+        <label asp-for="FuelName" class="form-label">Название топлива:</label><br />
+        <input type="text" asp-for="FuelName" class="form-control" disabled />
+    </p>
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Подтвердить удаление" class="btn btn-secondary" />
+    </p>
+</form>

@@ -1,0 +1,33 @@
+﻿@model ReceptionFuel
+
+@{
+    ViewData["Title"] = "Внесение данных о покупку топлива";
+}
+
+<form asp-action="createOrEditReceptionFuel" asp-controller="fuelOperation" >
+    @Html.HiddenFor(model => model.ReceptionId)
+    <p>
+        <label asp-for="DateReception" class="form-label">Введите дату поставки:</label><br />
+        <input type="date" asp-for="DateReception" class="form-control" />
+    </p>
+    <p>
+        <label asp-for="FuelId" class="form-label">Вид топлива:</label><br />
+        @Html.DropDownList("FuelId", ViewBag.Fuels as SelectList)
+    </p>
+    <p>
+        <label asp-for="FuelVolume" class="form-label">Объем топлива(л.):</label><br />
+        <input type="number" asp-for="FuelVolume" class="form-control" />
+    </p>
+    <p>
+        <label asp-for="SupplierId" class="form-label">Поставщика:</label><br />
+        @Html.DropDownList("SupplierId", ViewBag.FuelSuppliers as SelectList)
+    </p>
+    <p>
+        <label asp-for="EmployeeId" class="form-label">Принял сотрудник:</label><br />
+        @Html.DropDownList("EmployeeId", ViewBag.Employees as SelectList)
+    </p>
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Внести данные" class="btn btn-secondary" />
+    </p>
+</form> 

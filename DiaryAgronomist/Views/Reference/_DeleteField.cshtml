@@ -1,0 +1,21 @@
+﻿@model FieldPlanting
+
+@{
+    ViewData["Title"] = "Удаление полей";
+}
+
+<form asp-action="DeleteField" asp-controller="Reference" asp-route-id="@Model.FieldId">
+    @Html.HiddenFor(model => model.FieldId)
+    <p>
+        <label asp-for="FieldArea" class="form-label">Площадь поля:</label><br />
+        <input type="number" asp-for="FieldArea" class="form-control" disabled />
+    </p>
+    <p>
+        <label asp-for="FieldAddress" class="form-label">Адрес поля:</label><br />
+        <input type="text" asp-for="FieldAddress" class="form-control" disabled />
+    </p>
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Подтвердить удаление" class="btn btn-secondary" />
+    </p>
+</form>

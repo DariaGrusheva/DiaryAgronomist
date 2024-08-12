@@ -1,0 +1,116 @@
+﻿@model List<Machinery>
+
+@{
+    ViewData["Title"] = "Техника";
+}
+
+<div class="container text-center">
+    <div class="row">
+        <h2 class="title">Техника</h2>
+        </div>
+    <div class="row">
+        <!-- Кнопка вызова модального окна -->
+        <button type="button" class="btn btn-primary btn-create" data-bs-toggle="modal" onclick="createMachinery()">
+            Добавить запись
+        </button>
+
+        <!-- Модальное окно -->
+        <div class="modal fade" id="createMachineryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteMachineryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Удаление записи:</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Название техники</th>
+                <th scope="col">Год выпуска</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.MachineryName</td>
+                    <td>@item.ManufactureYear</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-create btn-ref" style="width: 60%" data-bs-toggle="modal" onclick="createMachinery(@item.MachineryId)">
+                                    Изменить
+                                </button>
+                            </td>
+                            <td>
+
+                                <button type="button" class="btn btn-primary btn-create btn-ref" style="width: 60%" data-bs-toggle="modal" onclick="deleteMachinery(@item.MachineryId)">
+                                    Удалить
+                                </button>
+
+                            </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</div>
+
+    @section scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+        <script>
+            function deleteMachinery(machineryId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetMachineryForDelete", "Reference")',
+                    data: { id: machineryId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#deleteMachineryModal").find(".modal-body").html(response);
+                        $("#deleteMachineryModal").modal('show');
+                    }
+                })
+            }
+
+            function createMachinery(machineryId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("CreateOrEditMachinery", "Reference")',
+                    data: { id: machineryId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        if (machineryId) {
+                            $("#createMachineryModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для изменения записи заполните поля:</h4>');
+                        }
+                        else {
+                            $("#createMachineryModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для добавления записи заполните поля:</h4>');
+                        }
+
+                        $("#createMachineryModal").find(".modal-body").html(response);
+                        $("#createMachineryModal").modal('show');
+                    }
+                })
+            }
+        </script>
+    }

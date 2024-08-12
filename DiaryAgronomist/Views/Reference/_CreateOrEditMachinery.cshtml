@@ -1,0 +1,21 @@
+﻿@model Machinery
+
+@{
+    ViewData["Title"] = "Техника";
+}
+
+<form asp-action="CreateOrEditMachinery" asp-controller="Reference">
+    @Html.HiddenFor(model => model.MachineryId)
+    <p>
+        <label asp-for="MachineryName" class="form-label">Введите название техники:</label><br />
+        <input type="text" asp-for="MachineryName" class="form-control" />
+    </p>
+    <p>
+        <label asp-for="ManufactureYear" class="form-label">Введите год выпуска:</label><br />
+        <input type="number" asp-for="ManufactureYear" class="form-control" />
+    </p>
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Внести данные" class="btn btn-secondary" />
+    </p>
+</form>

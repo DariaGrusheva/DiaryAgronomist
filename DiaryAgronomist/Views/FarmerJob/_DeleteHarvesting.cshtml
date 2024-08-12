@@ -1,0 +1,29 @@
+﻿@model Harvesting
+
+@{
+    ViewData["Title"] = "Удаление уборки";
+}
+
+<form asp-action="DeleteHarvesting" asp-controller="FarmerJob" asp-route-id="@Model.HarvestingId">
+    @Html.HiddenFor(model => model.HarvestingId)
+    <p>
+        <label asp-for="HarvestingDate" class="form-label">Дата уборки:</label><br />
+        <input type="date" asp-for="HarvestingDate" class="form-control" disabled/>
+    </p>
+    <p>
+        <label asp-for="FieldPlanting.FieldAddress" class="form-label">Поле:</label><br />
+        <input type="text" asp-for="FieldPlanting.FieldAddress" class="form-control" disabled/>
+    </p>
+    <p>
+        <label asp-for="Cereal.CerealName" class="form-label">Зерновые:</label><br />
+        <input type="text" asp-for="Cereal.CerealName" class="form-control" disabled />
+    </p>
+    <p>
+        <label asp-for="NumberCereal" class="form-label">Объем зерновых:</label><br />
+        <input type="text" asp-for="NumberCereal" class="form-control" disabled />
+    </p>
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Подтвердить удаление" class="btn btn-secondary" />
+    </p>
+</form>

@@ -1,0 +1,116 @@
+﻿@model List<Fuel>
+
+@{
+    ViewData["Title"] = "Топливо";
+}
+
+<div class="container text-center">
+    <div class="row">
+        <h2 class="title">Толиво</h2>
+    </div>
+    <div class="row">
+        <!-- Кнопка вызова модального окна -->
+        <button type="button" class="btn btn-primary btn-create" data-bs-toggle="modal" onclick="createFuel()">
+            Добавить запись
+        </button>
+
+        <!-- Модальное окно -->
+        <div class="modal fade" id="createFuelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Для добавления новой записи заполните поля:</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Удаление записи:</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Название топлива</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.FuelName</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-create btn-ref" style="width: 45%" data-bs-toggle="modal" onclick="createFuel(@item.FuelId)">
+                                    Изменить
+                                </button>
+                            </td>
+                            <td>
+
+                                <button type="button" class="btn btn-primary btn-create btn-ref" style="width: 45%" data-bs-toggle="modal" onclick="deleteFuel(@item.FuelId)">
+                                    Удалить
+                                </button>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    @section scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+        <script>
+            function deleteFuel(fuelId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetFuelForDelete", "Reference")',
+                    data: { id: fuelId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#deleteModal").find(".modal-body").html(response);
+                        $("#deleteModal").modal('show');
+                    }
+                })
+            }
+
+            function createFuel(fuelId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("CreateOrEditFuel", "Reference")',
+                    data: { id: fuelId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        if (fuelId) {
+                            $("#createFuelModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для изменения записи заполните поля:</h4>');
+                        }
+                        else {
+                            $("#createFuelModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для добавления записи заполните поля:</h4>');
+                        }
+
+                        $("#createFuelModal").find(".modal-body").html(response);
+                        $("#createFuelModal").modal('show');
+                    }
+                })
+            }
+        </script>
+    }

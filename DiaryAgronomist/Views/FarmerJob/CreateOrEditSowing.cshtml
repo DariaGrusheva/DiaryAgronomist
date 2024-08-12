@@ -1,0 +1,97 @@
+﻿@model Sowing
+@{
+    ViewData["Title"] = "Внесение данных о посевах";
+    List<int> idEmployees = new();
+    List<int> idMachineries = new();
+    if (ViewBag.SelectedEmployees != null)
+        idEmployees.AddRange(ViewBag.SelectedEmployees.Items);
+    if (ViewBag.SelectedMachineries != null)
+        idMachineries.AddRange(ViewBag.SelectedMachineries.Items);
+}
+
+<div class="container text-center">
+    <div class="row">
+        <h2 class="title">Внесение данных о посевах</h2>
+    </div>
+    <form asp-action="createOrEditSowing" asp-controller="farmerJob">
+
+                <div class="row">
+                    <div class="col-md">
+                        <div class="form-floating">
+                        @Html.HiddenFor(model => model.SowingId)
+                        <p>
+                            <label asp-for="SowingDate" class="form-label">Введите дату:</label><br />
+                            <input type="date" asp-for="SowingDate" class="form-control" />
+                        </p>
+                        <p>
+                            <label asp-for="FieldId" class="form-label">Выберите поле:</label><br />
+                            @Html.DropDownList("FieldId", ViewBag.Fields as SelectList)
+                        </p>
+                        <p>
+                            <label asp-for="NumberCereal" class="form-label">Объем зерновых:</label><br />
+                            <input type="text" asp-for="NumberCereal" class="form-control" />
+                        </p>
+                        <p>
+                            <label asp-for="CerealId" class="form-label">Выберите зерновые:</label><br />
+                            @Html.DropDownList("CerealId", ViewBag.Cereals as SelectList)
+                        </p>
+                        <p>
+                            <label asp-for="SownArea" class="form-label">Площадь засева:</label><br />
+                            <input type="text" asp-for="SownArea" class="form-control" />
+                        </p>
+                        <p>
+                            <a type="button" class="btn btn-secondary" href="@Url.Action("GetSowing", "FarmerJob")">Закрыть</a>
+                            <input type="submit" value="Внести данные" class="btn btn-secondary" />
+                        </p>
+                        </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        @foreach (var emp in ViewBag.Employees)
+                        {
+                            int empValueToInt = 0;
+                            int.TryParse(emp.Value, out empValueToInt);
+                            if (idEmployees.Contains(empValueToInt))
+                            {
+                                <p>
+                                    <input type="checkbox" name="employeesId" value="@emp.Value" checked /> @emp.Text
+                                </p>
+                            }
+                            else
+                            {
+                                <p>
+                                    <input type="checkbox" name="employeesId" value="@emp.Value" /> @emp.Text
+                                </p>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        @foreach (var mach in ViewBag.Machineries)
+                        {
+                            int machValueToInt = 0;
+                            int.TryParse(mach.Value, out machValueToInt);
+                            if (idMachineries.Contains(machValueToInt))
+                            {
+                                <p>
+                                    <input type="checkbox" name="machineriesId" value="@mach.Value" checked /> @mach.Text
+                                </p>
+                            }
+                            else
+                            {
+                                <p>
+                                    <input type="checkbox" name="machineriesId" value="@mach.Value" /> @mach.Text
+                                </p>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+    </form>
+    </div>
+
+
+   
+

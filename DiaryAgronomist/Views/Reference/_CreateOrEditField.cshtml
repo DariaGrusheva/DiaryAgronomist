@@ -1,0 +1,23 @@
+﻿@model FieldPlanting
+@{
+    ViewData["Title"] = "Поля";
+}
+
+<form asp-action="createOrEditField" asp-controller="reference">
+    @Html.HiddenFor(model => model.FieldId)
+    <p>
+        <label asp-for="FieldArea" class="form-label">Введите площадь поля:</label><br />
+        <input type="number" asp-for="FieldArea" class="form-control" />
+        <div id="fieldArea" class="form-text">
+            Данные должны иметь целочисленное или дробное значение.
+        </div>
+    </p>
+    <p>
+        <label asp-for="FieldAddress" class="form-label">Введите адрес поля:</label><br />
+        <input type="text" asp-for="FieldAddress" class="form-control" />
+    </p>
+    <p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <input type="submit" value="Внести данные" class="btn btn-secondary" />
+    </p>    
+</form> 

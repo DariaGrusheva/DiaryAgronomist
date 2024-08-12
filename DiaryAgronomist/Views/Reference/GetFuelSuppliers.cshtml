@@ -1,0 +1,120 @@
+﻿@model List<FuelSupplier>
+
+@{
+    ViewData["Title"] = "Поставщики топлива";
+}
+
+<div class="container text-center">
+    <div class="row">
+        <h2 class="title">Поставщики толива</h2>
+    </div>
+    <div class="row">
+        <!-- Кнопка вызова модального окна -->
+        <button type="button" class="btn btn-primary btn-create" data-bs-toggle="modal" onclick="createFuelSupplier()">
+            Добавить запись
+        </button>
+
+        <!-- Модальное окно -->
+        <div class="modal fade" id="createFuelSupplierModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Для добавления новой записи заполните поля:</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Удаление записи:</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Наименование организации</th>
+                        <th scope="col">Адрес организации</th>
+                        <th scope="col">Контактный телефон</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.NameOrganization</td>
+                            <td>@item.AddressOrganization</td>
+                            <td>@item.PhoneNumberOrganization</td>
+                            <td>
+                                <button type="button" style="width: 80%" class="btn btn-primary btn-create btn-ref" data-bs-toggle="modal" onclick="createFuelSupplier(@item.SupplierId)">
+                                    Изменить
+                                </button>
+                            </td>
+                            <td>
+
+                                <button type="button" style="width: 80%" class="btn btn-primary btn-create btn-ref" data-bs-toggle="modal" onclick="deleteFuelSupplier(@item.SupplierId)">
+                                    Удалить
+                                </button>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    @section scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+        <script>
+            function deleteFuelSupplier(fuelsupId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetFuelSupplierForDelete", "Reference")',
+                    data: { id: fuelsupId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#deleteModal").find(".modal-body").html(response);
+                        $("#deleteModal").modal('show');
+                    }
+                })
+            }
+
+            function createFuelSupplier(fuelsupId) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("CreateOrEditFuelSupplier", "Reference")',
+                    data: { id: fuelsupId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        if (fuelsupId) {
+                            $("#createFuelSupplierModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для изменения записи заполните поля:</h4>');
+                        }
+                        else {
+                            $("#createFuelSupplierModal").find(".modal-header").html('<h4 class="modal-title" id="exampleModalLabel">Для добавления записи заполните поля:</h4>');
+                        }
+
+                        $("#createFuelSupplierModal").find(".modal-body").html(response);
+                        $("#createFuelSupplierModal").modal('show');
+                    }
+                })
+            }
+        </script>
+    }
